@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Game</title>
+    <style>
+        /* CSS */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #c3af1f;
+            background-image: url(Math\ 2.jpg);
+            color: white;
+            font-family: initial;
+            background-attachment: fixed;
+        }
+
+        header {
+            background-color: #544caf30;
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+        }
+
+        main {
+            text-align: center;
+            margin: 2em auto;
+            max-width: 600px;
+            background-position: center;
+            /*  margin-top: 130px;*/
+            height: 300px;
+            padding: 50px 50px;
+        }
+
+        #controls button,
+        #start-game {
+            margin: 0.5em;
+            padding: 0.5em 1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #controls button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        ul {
+            text-align: left;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        li {
+            margin-bottom: 1em;
+            padding: 1em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #intro {
+            background-color: rgba(0, 0, 0, 0.829);
+            border-radius: 20px 20px 20px;
+            margin-bottom: 50px;
+            margin-top: 1em;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            border-color: rgba(190, 131, 35, 0.902);
+            border-style: dashed;
+            background-position: center;
+
+        }
+
+        #intro,
+        #quiz-container {
+            display: none;
+        }
+
+
+
+        #timer {
+            font-size: 30px;
+            color: red;
+            text-shadow: 2px 2px 0px white;
+            font-weight: bold;
+
+
+
+
+
+
+        }
+
+
+
+        .game-option {
+            background-color: #4CAF50;
+            /* لون الخلفية */
+            color: white;
+            /* لون النص */
+            padding: 10px 20px;
+            /* المسافة داخل الزر */
+            border: none;
+            /* إزالة الحدود */
+            border-radius: 5px;
+            /* زوايا مستديرة */
+            font-size: 16px;
+            /* حجم النص */
+            cursor: pointer;
+            /* شكل المؤشر عند التمرير */
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px #2d6b2d;
+            /* ظل الزر */
+
+
+        }
+
+        .game-option:hover {
+            background-color: #45a049;
+            transform: scale(1.1);
+        }
+
+        .game-option:active {
+            background-color: #3e8e41;
+            transform: scale(0.95);
+            box-shadow: 0 2px #2d6b2d;
+            transform: translateY(2px);
+        }
+
+        /* تعديل الخط الأساسي */
+        .custom-label {
+            font-family: Arial, sans-serif;
+            /* نوع الخط */
+            font-size: 16px;
+            /* حجم الخط */
+            font-weight: bold;
+            /* جعل النص عريض */
+            color: #333;
+            /* لون النص */
+            margin-bottom: 10px;
+            /* مسافة أسفل العنصر */
+            border-radius: 20px 20px 20px;
+
+        }
+
+        /* إضافة تأثير عند التمرير على الـ label */
+        .custom-label:hover {
+            color: #4CAF50;
+            /* تغيير لون النص */
+            /*  cursor: pointer;*/
+            /* تغيير شكل المؤشر */
+        }
+
+        /* إضافة أيقونة قبل النص */
+        .custom-label::before {
+            content: "✏️ ";
+            /* رمز يسبق النص */
+            font-size: 18px;
+            /* حجم الرمز */
+        }
+
+        /* جعل النص بحروف كبيرة */
+        .custom-label {
+            text-transform: uppercase;
+            /* تحويل النص إلى حروف كبيرة */
+            letter-spacing: 1px;
+            /* إضافة تباعد بين الحروف */
+        }
+
+        /* تأثير متحرك عند التركيز على الحقل المرتبط */
+        input:focus+.custom-label {
+            color: #ff5722;
+            /* تغيير لون الـ label */
+            text-decoration: underline;
+            /* إضافة خط تحت النص */
+        }
+
+        #H1 {
+            letter-spacing: 1cap;
+            word-spacing: 5cqh;
+            text-shadow: 10px 10px 0 black;
+            font-size: 50px;
+        }
+
+        h2 {
+            letter-spacing: 0.2cap;
+            /*  word-spacing: 5cqh;*/
+            font-size: 30px;
+            color: white;
+            /* background: linear-gradient(45deg, rgba(255, 102, 0, 0.692), orange);*/
+            background: linear-gradient(45deg, black, red);
+            border-radius: 10px 10px 10px 10px;
+
+
+
+
+        }
+
+        #H2 {
+            background: linear-gradient(45deg, rgb(165, 112, 42), rgba(255, 217, 0, 0.946));
+            /*  background: linear-gradient(45deg, brown, orange);*/
+            border-radius: 10px 100px 10px 100px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 10px rgba(255, 204, 0, 0.6);
+        }
+
+        label {
+            font-size: 30px;
+            color: yellow;
+            text-shadow: 5px 5px 0 black;
+
+
+        }
+
+        ul {
+            background-color: rgba(0, 0, 0, 0.42);
+        }
+
+        .start-button {
+            font-size: 22px;
+            /* حجم الخط */
+            font-weight: bold;
+            /* النص غامق */
+            color: #fff;
+            /* لون النص */
+            background: linear-gradient(45deg, gold, orange);
+            /* تدرج اللون */
+            border: none;
+            /* إزالة الحدود */
+            border-radius: 10px;
+            /* زوايا مستديرة */
+            padding: 15px 30px;
+            /* مساحة داخلية */
+            text-transform: uppercase;
+            /* جعل النص بأحرف كبيرة */
+            cursor: pointer;
+            /* مؤشر اليد */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 10px rgba(255, 204, 0, 0.6);
+            /* ظل الزر */
+            transition: transform 0.2s, box-shadow 0.2s;
+            /* تأثير التحولات */
+        }
+
+        .start-button:hover {
+            transform: scale(1.1);
+            /* يكبر الزر عند التمرير */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 204, 0, 0.8);
+            /* زيادة الظل */
+        }
+
+        .start-button:active {
+            transform: scale(0.95);
+            /* يقل الحجم عند الضغط */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 204, 0, 0.5);
+            /* تقليل الظل */
+        }
+
+        #answer {
+            font-size: 20px;
+        }
+
+
+
+        #retry {
+            font-size: 22px;
+            /* حجم الخط */
+            font-weight: bold;
+            /* النص غامق */
+            color: #fff;
+            /* لون النص */
+            background: linear-gradient(45deg, red, #ff9900);
+            /* تدرج اللون */
+            border: none;
+            /* إزالة الحدود */
+            border-radius: 10px;
+            /* زوايا مستديرة */
+            padding: 15px 30px;
+            /* مساحة داخلية */
+            text-transform: uppercase;
+            /* جعل النص بأحرف كبيرة */
+            cursor: pointer;
+            /* مؤشر اليد */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 10px rgba(255, 204, 0, 0.6);
+            /* ظل الزر */
+            transition: transform 0.2s, box-shadow 0.2s;
+
+        }
+
+        #retry:hover {
+            transform: scale(1.1);
+            /* يكبر الزر عند التمرير */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 204, 0, 0.8);
+            /* زيادة الظل */
+        }
+
+        #retry:active {
+            transform: scale(0.95);
+            /* يقل الحجم عند الضغط */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 204, 0, 0.5);
+            /* تقليل الظل */
+
+        }
+
+        #submit-answer {
+            font-size: 22px;
+            /* حجم الخط */
+            font-weight: bold;
+            /* النص غامق */
+            color: #fff;
+            /* لون النص */
+            background: linear-gradient(45deg, green, rgb(7, 99, 7));
+            /* تدرج اللون */
+            border: none;
+            /* إزالة الحدود */
+            border-radius: 10px;
+            /* زوايا مستديرة */
+            padding: 15px 30px;
+            /* مساحة داخلية */
+            text-transform: uppercase;
+            /* جعل النص بأحرف كبيرة */
+            cursor: pointer;
+            /* مؤشر اليد */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 0 10px rgba(255, 204, 0, 0.6);
+            /* ظل الزر */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #submit-answer:hover {
+            transform: scale(1.1);
+            /* يكبر الزر عند التمرير */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 204, 0, 0.8);
+            /* زيادة الظل */
+
+        }
+
+        #submit-answer:active {
+            transform: scale(0.95);
+            /* يقل الحجم عند الضغط */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 10px rgba(255, 204, 0, 0.5);
+            /* تقليل الظل */
+
+        }
+
+        p {
+            font-size: 30px;
+            background: linear-gradient(45deg, red, #ff9900);
+            font-weight: bold;
+            background-position: center;
+            margin-left: 70x;
+
+        }
+
+        #score {
+            background: linear-gradient(45deg, red, #ff9900);
+            text-transform: uppercase;
+            /*  font-size: larger;*/
+            font-weight: bold;
+            /*    font-size: 1.2em;*/
+            margin-top: 1em;
+        }
+
+
+
+
+
+        /* #quiz-container {
+          background-color: rgba(255, 0, 0, 0.634);
+        }*/
+        .test {
+            background-color: rgba(0, 0, 0, 0.587);
+
+
+        }
+    </style>
+    </style>
+</head>
+
+<body>
+
+
+
+    <header>
+        <h1 id="H1">Math Game</h1>
+    </header>
+    <main>
+        <div id="intro">
+            <h2 id="H2">Welcome to the Math Game!</h2>
+            <form id="user-info-form">
+                <label>
+                    Name:
+                    <input type="text" class="custom-label" required>
+                </label>
+                <br><br>
+                <label>
+                    Email:
+                    <input type="email" class="custom-label" required>
+                </label>
+                <br><br>
+                <button type="submit" class="start-button">Start Game</button>
+
+
+            </form>
+        </div>
+
+        <div id="game-selection" style="display: none;">
+            <h2>Choose Your Game</h2>
+            <button class="game-option" data-type="addition">Addition</button>
+            <button class="game-option" data-type="subtraction">Subtraction</button>
+            <button class="game-option" data-type="multiplication">Multiplication</button>
+            <button class="game-option" data-type="division">Division</button>
+        </div>
+        <div id="quiz-container"></div>
+
+        <div class="test">
+
+
+            <!--Score-->
+
+            <div id="score" style="display: none;">
+                Score: <span id="score-value">0</span>
+            </div>
+            <div id="controls" style="display: none;">
+                <div id="timer">Time: <span style="color: red;"> 10s </span></div>
+                <button id="submit-answer">Submit Answer</button>
+            </div>
+        </div>
+        <!--Score-->
+
+
+
+
+    </main>
+
+
+    <script>
+        const questions = {
+            addition: [
+                { text: "What is : 3 + 5 ?", answer: 8 },
+                { text: "What is : 10 + 15 ?", answer: 25 },
+                { text: "What is : 20 + 30 ?", answer: 50 },
+                { text: "What is : 7 + 8 ?", answer: 15 },
+                { text: "What is : 12 + 18 ?", answer: 30 },
+                { text: "What is : 5 + 9 ?", answer: 14 },
+                { text: "What is : 25 + 25 ?", answer: 50 }
+            ],
+            subtraction: [
+                { text: "What is : 10 - 5 ?", answer: 5 },
+                { text: "What is : 20 - 8 ?", answer: 12 },
+                { text: "What is : 30 - 15 ?", answer: 15 },
+                { text: "What is : 50 - 20 ?", answer: 30 },
+                { text: "What is : 18 - 9 ?", answer: 9 },
+                { text: "What is : 100 - 50 ?", answer: 50 },
+                { text: "What is : 60 - 25 ?", answer: 35 }
+            ],
+            multiplication: [
+                { text: "What  is : 3 * 4 ?", answer: 12 },
+                { text: "What  is : 6 * 5 ?", answer: 30 },
+                { text: "What  is : 7 * 8 ?", answer: 56 },
+                { text: "What  is : 9 * 2 ?", answer: 18 },
+                { text: "What  is : 5 * 5 ?", answer: 25 },
+                { text: "What  is : 10 * 10 ?", answer: 100 },
+                { text: "What  is : 4 * 7 ?", answer: 28 },
+                { text: "What  is : 12 * 3 ?", answer: 36 },
+                { text: "What  is : 8 * 8 ?", answer: 64 }
+            ],
+            division: [
+                { text: "What is : 8 / 2 ?", answer: 4 },
+                { text: "What is : 20 / 4 ?", answer: 5 },
+                { text: "What is : 9 / 3 ?", answer: 3 },
+                { text: "What is : 16 / 4 ?", answer: 4 },
+                { text: "What is : 30 / 5 ?", answer: 6 },
+                { text: "What is : 40 / 8 ?", answer: 5 },
+                { text: "What is : 100 / 10 = ?", answer: 10 }
+            ]
+        };
+
+
+
+        let currentGame = '';
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let score = 0;
+        let timer;
+
+        const introScreen = document.getElementById('intro');
+        const gameSelectionScreen = document.getElementById('game-selection');
+        const quizContainer = document.getElementById('quiz-container');
+        const controls = document.getElementById('controls');
+        const scoreDisplay = document.getElementById('score');
+        const timerDisplay = document.getElementById('timer');
+
+        introScreen.style.display = 'block';
+
+        document.getElementById('user-info-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+            introScreen.style.display = 'none';
+            gameSelectionScreen.style.display = 'block';
+        });
+
+        document.querySelectorAll('.game-option').forEach(button => {
+            button.addEventListener('click', () => {
+                currentGame = button.dataset.type;
+                gameSelectionScreen.style.display = 'none';
+                startGame();
+            });
+        });
+
+        function startGame() {
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            score = 0;
+
+            updateScore();
+            // scoreDisplay.style.display = 'block';
+
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const question = questions[currentGame][currentQuestionIndex];
+
+            quizContainer.innerHTML = `
+                <div class="test"><h2>Question ${currentQuestionIndex + 1}</h2>
+                <p>${question.text}</p>
+                <input type="number" id="answer" placeholder="Your answer">
+                <p>Your Score: ${score}</p>
+                </div>
+            `;
+
+            quizContainer.style.display = 'block';
+            controls.style.display = 'block';
+
+            startTimer(10);
+        }
+
+        function startTimer(seconds) {
+            clearInterval(timer);
+            timerDisplay.textContent = `Time: ${seconds}s`;
+
+            timer = setInterval(() => {
+                seconds--;
+                timerDisplay.textContent = `Time: ${seconds}s`;
+
+                if (seconds <= 0) {
+                    clearInterval(timer);
+                    submitAnswer();
+                }
+            }, 1000);
+        }
+
+        function submitAnswer() {
+            clearInterval(timer);
+
+            const answerInput = document.getElementById('answer');
+            const userAnswer = Number(answerInput.value) || 0;
+            const correctAnswer = questions[currentGame][currentQuestionIndex].answer;
+
+            userAnswers.push({ userAnswer, correctAnswer });
+            if (userAnswer === correctAnswer) {
+                score += 10;
+                updateScore();
+            }
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions[currentGame].length) {
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score-value').textContent = score;
+        }
+
+        function showResults() {
+            const totalPoints = questions[currentGame].length * 10;
+            quizContainer.innerHTML = `
+                <h2 >Game Over!</h2>
+                <p >Your Score: ${score} out of ${totalPoints} points</p>
+           
+                <ul>
+                    ${userAnswers.map((result, index) => `
+                        <li>
+                            <strong>Q${index + 1}:</strong> ${questions[currentGame][index].text}<br>
+                            <strong>Your Answer:</strong> ${result.userAnswer} ${result.userAnswer === result.correctAnswer ? '✅' : '❌'}<br>
+                            <strong>Correct:</strong> ${result.correctAnswer} 
+                        </li>
+                    `).join('')}
+                </ul>
+                <button id="retry">Try Another Operation</button>
+            `;
+
+            controls.style.display = 'none';
+
+            document.getElementById('retry').addEventListener('click', () => {
+                quizContainer.style.display = 'none';
+                scoreDisplay.style.display = 'none';
+                gameSelectionScreen.style.display = 'block';
+            });
+        }
+
+        document.getElementById('submit-answer').addEventListener('click', submitAnswer);
+
+
+    </script>
+</body>
+
+</html>
